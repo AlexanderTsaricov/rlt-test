@@ -1,0 +1,26 @@
+# Python кэш
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Виртуальное окружение
+venv/
+env/
+ENV/
+
+# База данных
+db/storage.sqlite
+
+# Файлы настроек среды
+*.env
+
+# Логи
+*.log
+
+# JSON-файлы с данными, если они временные
+videos.json
+
+# PyCharm/VSCode временные файлы
+.idea/
+.vscode/
