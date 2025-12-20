@@ -213,11 +213,7 @@ while True:
                 
                 
 
-                """ if not rows:
-                    send_message(chat_id, "Ничего не найдено")
-                else:
-                    text = "\n".join([str(row) for row in rows])
-                    send_message(chat_id, text) """
+                send_message(chat_id, "answer")
     except Exception as e:
         print("Ошибка:", e)
     time.sleep(1)  # проверяем новые сообщения каждую секунду
