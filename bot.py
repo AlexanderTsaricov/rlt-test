@@ -165,6 +165,10 @@ while True:
                 print(response)
                 parsed = extract_json(response)
 
+                if parsed is None:
+                    send_message(chat_id, "Ошибка: модель вернула некорректный JSON.")
+                    continue
+
                 db = Database("db/storage.sqlite")
 
                 method = parsed.get("method")
