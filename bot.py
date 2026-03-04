@@ -26,9 +26,12 @@ load_dotenv()
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 if not TOKEN:
     raise ValueError("Не найден TELEGRAM_TOKEN в .env")
+API_KEY = os.getenv("GROK_API_KEY")
+if not API_KEY:
+    raise ValueError("Не найден GOOGLE_API_AI_KEY в .env")
 
 API_URL = f"https://api.telegram.org/bot{TOKEN}"
-llm = LlmApiController()
+llm = LlmApiController(API_KEY)
 offset = None  # для отслеживания новых сообщений
 
 
@@ -166,7 +169,7 @@ while True:
                 parsed = extract_json(response)
 
                 if parsed is None:
-                    send_message(chat_id, "Ошибка: модель вернула некорректный JSON.")
+                    send_message(chat_id, response)
                     continue
 
                 db = Database("db/storage.sqlite")
@@ -217,7 +220,7 @@ while True:
                 
                 
 
-                send_message(chat_id, "answer")
+                send_message(chat_id, answer)
     except Exception as e:
         print("Ошибка:", e)
     time.sleep(1)  # проверяем новые сообщения каждую секунду

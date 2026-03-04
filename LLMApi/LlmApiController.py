@@ -1,28 +1,26 @@
 import requests
 
 class LlmApiController:
-    def __init__(self, api_url="https://apifreellm.com/api/chat"):
-        """
-        api_url: URL для POST-запроса к бесплатному LLM
-        """
-        self.api_url = api_url
+    def __init__(self, api_key):
+        if not api_key:
+            raise ValueError("API key отсутствует")
+
+        self.api_key = api_key
+        self.base_url = "https://api.groq.com/openai/v1/chat/completions"
+        self.headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
 
     def send(self, text):
-        """
-        Отправляет текст в AI и возвращает ответ
-        """
-        headers = {"Content-Type": "application/json"}
-        payload = {"message": text}
+        payload = {
+            "model": "llama-3.3-70b-versatile",
+            "messages": [
+                {"role": "user", "content": text}
+            ]
+        }
 
-        try:
-            response = requests.post(self.api_url, headers=headers, json=payload)
-            response.raise_for_status()
-            data = response.json()
-            return data.get("response") or data.get("output") or str(data)
-        except Exception as e:
-            print("Ошибка при запросе к AI:", e)
-            return None
-
-
-
-    
+        response = requests.post(self.base_url, headers=self.headers, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        return data["choices"][0]["message"]["content"]
